@@ -7,7 +7,7 @@ export PROJECT_NAME
 VERSION                                 :=$(shell cat version)
 export VERSION
 
-OS_WIN									:=$(shell systeminfo | findstr /B /C:"OS Name")
+OS_WIN                                      :=$(shell systeminfo | findstr /B /C:"OS Name")
 ifneq (,$(findstring Windows,$(OS_WIN)))
 	OS                                      :=$(OS_WIN)
 	OS_VERSION                              :=$(shell systeminfo | findstr /B /C:"OS Version")
