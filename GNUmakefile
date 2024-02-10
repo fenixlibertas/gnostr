@@ -1,4 +1,3 @@
-
 ifeq ($(project),)
 PROJECT_NAME                            := $(notdir $(PWD))
 else
@@ -7,13 +6,26 @@ endif
 export PROJECT_NAME
 VERSION                                 :=$(shell cat version)
 export VERSION
-TIME                                    :=$(shell date +%s)
+
+OS_WIN									:=$(shell systeminfo | findstr /B /C:"OS Name")
+ifneq (,$(findstring Windows,$(OS_WIN)))
+	OS                                      :=$(OS_WIN)
+	OS_VERSION                              :=$(shell systeminfo | findstr /B /C:"OS Version")
+	TIME                                    :=$(shell .\build-win\getdate.bat)
+$(info "Windows OS detected")
+else
+	OS                                      :=$(shell uname -s)
+	OS_VERSION                              :=$(shell uname -r)
+	TIME                                    :=$(shell date +%s)
+endif
+export OS
+export OS_VERSION
 export TIME
 
-OS                                      :=$(shell uname -s)
-export OS
-OS_VERSION                              :=$(shell uname -r)
-export OS_VERSION
+$(info --->TIME:$(TIME))
+$(info --->OS:$(OS))
+$(info --->OS_VERSION:$(OS_VERSION))
+
 ARCH                                    :=$(shell uname -m)
 export ARCH
 ifeq ($(ARCH),x86_64)
